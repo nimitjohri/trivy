@@ -454,6 +454,14 @@ func TestNewPackageURL(t *testing.T) {
 			},
 		},
 		{
+			name: "julia project without uuid",
+			typ:  ftypes.Julia,
+			pkg: ftypes.Package{
+				Name:    "HTTP",
+				Version: "2.5.0",
+			},
+		},
+		{
 			name: "bottlerocket package",
 			typ:  ftypes.Bottlerocket,
 			metadata: types.Metadata{

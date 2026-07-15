@@ -234,6 +234,21 @@ func TestScanner_Detect(t *testing.T) {
 			want: nil,
 		},
 		{
+			name: "empty version",
+			fixtures: []string{
+				"testdata/fixtures/echo.yaml",
+				"testdata/fixtures/data-source.yaml",
+			},
+			args: args{
+				pkgs: []ftypes.Package{
+					{
+						Name:    "python3",
+						SrcName: "python3",
+					},
+				},
+			},
+		},
+		{
 			name: "sad path - invalid",
 			fixtures: []string{
 				"testdata/fixtures/echo.yaml",

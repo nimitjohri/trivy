@@ -125,6 +125,10 @@ func New(t ftypes.TargetType, metadata types.Metadata, pkg ftypes.Package) (*Pac
 		}
 		return (*PackageURL)(purl), nil
 	case packageurl.TypeJulia:
+		// Julia PURLs require a uuid qualifier; skip PURL when manifest UUID is missing.
+		if pkg.ID == "" {
+			return nil, nil
+		}
 		var qs packageurl.Qualifiers
 		namespace, name, qs = parseJulia(name, pkg.ID) // for Julia, the ID is set to the package UUID
 		qualifiers = append(qualifiers, qs...)
@@ -440,13 +444,12 @@ func parseNpm(pkgName string) (string, string) {
 // ref. https://github.com/package-url/purl-spec/blob/7759d1cf81629267742eeeb0cdfccf5ebd624cc5/PURL-TYPES.rst#julia
 func parseJulia(pkgName, pkgUUID string) (string, string, packageurl.Qualifiers) {
 	namespace, name := parsePkgName(pkgName)
-	qualifiers := packageurl.Qualifiers{
-		{
-			Key:   "uuid",
-			Value: pkgUUID,
-		},
+	if pkgUUID == "" {
+		return namespace, name, nil
 	}
-	return namespace, name, qualifiers
+	return namespace, name, packageurl.Qualifiers{
+		{Key: "uuid", Value: pkgUUID},
+	}
 }
 
 // nolint: gocyclo

@@ -113,7 +113,8 @@ func (id *PkgIdentifier) UnmarshalJSON(data []byte) error {
 	if aux.PURL != "" {
 		p, err := packageurl.FromString(aux.PURL)
 		if err != nil {
-			return err
+			// Ignore invalid cached PURLs (e.g. Julia entries with empty uuid qualifier).
+			return nil
 		} else if len(p.Qualifiers) == 0 {
 			p.Qualifiers = nil
 		}

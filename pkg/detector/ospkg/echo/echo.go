@@ -37,9 +37,14 @@ func (s *Scanner) Detect(ctx context.Context, _ string, _ *ftypes.Repository, pk
 			return nil, xerrors.Errorf("failed to get echo advisories: %w", err)
 		}
 		formattedInstalledVersion := utils.FormatSrcVersion(pkg)
+		if formattedInstalledVersion == "" {
+			continue
+		}
 		installedVersion, err := version.NewVersion(formattedInstalledVersion)
 		if err != nil {
-			return nil, xerrors.Errorf("failed to parse installed version: %w", err)
+			log.DebugContext(ctx, "Failed to parse the installed package version",
+				log.String("pkg", pkg.Name), log.String("version", formattedInstalledVersion), log.Err(err))
+			continue
 		}
 		for _, advisory := range advisories {
 			vuln := types.DetectedVulnerability{
@@ -65,7 +70,9 @@ func (s *Scanner) Detect(ctx context.Context, _ string, _ *ftypes.Repository, pk
 			if advisory.FixedVersion != "" {
 				fixedVersion, err := version.NewVersion(advisory.FixedVersion)
 				if err != nil {
-					return nil, xerrors.Errorf("failed to parse fixed version: %w", err)
+					log.DebugContext(ctx, "Failed to parse the fixed version",
+						log.String("version", advisory.FixedVersion), log.Err(err))
+					continue
 				}
 				if !installedVersion.LessThan(fixedVersion) {
 					continue
