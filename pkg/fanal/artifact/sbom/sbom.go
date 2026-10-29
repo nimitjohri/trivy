@@ -20,7 +20,7 @@ import (
 	"github.com/aquasecurity/trivy/pkg/sbom"
 )
 
-const artifactVersion = 1
+const artifactVersion = 0
 
 type Artifact struct {
 	filePath       string

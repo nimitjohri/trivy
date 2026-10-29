@@ -13,7 +13,6 @@ import (
 
 	"github.com/aquasecurity/trivy/internal/cachetest"
 	"github.com/aquasecurity/trivy/pkg/cache"
-	"github.com/aquasecurity/trivy/pkg/digest"
 	"github.com/aquasecurity/trivy/pkg/fanal/analyzer"
 	"github.com/aquasecurity/trivy/pkg/fanal/artifact"
 	"github.com/aquasecurity/trivy/pkg/fanal/types"
@@ -74,12 +73,6 @@ func TestArtifact_Inspect(t *testing.T) {
 										Maintainer: "Timo Teräs <timo.teras@iki.fi>",
 										Arch:       "x86_64",
 										Digest:     "sha1:cb2316a189ebee5282c4a9bd98794cc2477a74c6",
-										Digests: []digest.SourcedDigest{
-											{
-												Digest: "sha1:cb2316a189ebee5282c4a9bd98794cc2477a74c6",
-												Source: digest.SourceAPKInstalledDB,
-											},
-										},
 										InstalledFiles: []string{
 											"lib/libc.musl-x86_64.so.1",
 											"lib/ld-musl-x86_64.so.1",
@@ -240,7 +233,7 @@ func TestArtifact_Inspect(t *testing.T) {
 			wantBlobs: []cachetest.WantBlob{
 				{
 					// Cache key is based on commit hash (8a19b492a589955c3e70c6ad8efd1e4ec6ae0d35)
-					ID: "sha256:74a32b480af4718f21f6a2102c522d7574987bed398aabe53d334ee6e37fd31e",
+					ID: "sha256:d37c788d6fe832712cce9020943746b8764c04f7e323ed4ad68de36c5bf7d846",
 					BlobInfo: types.BlobInfo{
 						SchemaVersion: types.BlobJSONSchemaVersion,
 					},
@@ -249,9 +242,9 @@ func TestArtifact_Inspect(t *testing.T) {
 			want: artifact.Reference{
 				Name: "../../../../internal/gittest/testdata/test-repo",
 				Type: types.TypeRepository,
-				ID:   "sha256:74a32b480af4718f21f6a2102c522d7574987bed398aabe53d334ee6e37fd31e",
+				ID:   "sha256:d37c788d6fe832712cce9020943746b8764c04f7e323ed4ad68de36c5bf7d846",
 				BlobIDs: []string{
-					"sha256:74a32b480af4718f21f6a2102c522d7574987bed398aabe53d334ee6e37fd31e",
+					"sha256:d37c788d6fe832712cce9020943746b8764c04f7e323ed4ad68de36c5bf7d846",
 				},
 				RepoMetadata: artifact.RepoMetadata{
 					RepoURL:   "https://github.com/aquasecurity/trivy-test-repo/",

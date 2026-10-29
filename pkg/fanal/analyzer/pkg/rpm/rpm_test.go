@@ -11,7 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/aquasecurity/trivy/pkg/digest"
 	"github.com/aquasecurity/trivy/pkg/fanal/analyzer"
 	"github.com/aquasecurity/trivy/pkg/fanal/types"
 )
@@ -144,7 +143,6 @@ func Test_rpmPkgAnalyzer_listPkgs(t *testing.T) {
 							"rpc",
 							"libm-2.27.so",
 						},
-						SigMD5: "e35b7bd7c7a54c73d4b7f7e18f4a1e4f",
 						Vendor: "Red Hat",
 					},
 				},
@@ -161,13 +159,6 @@ func Test_rpmPkgAnalyzer_listPkgs(t *testing.T) {
 					SrcRelease: "317.el7",
 					Maintainer: "Red Hat",
 					Repository: types.PackageRepository{Class: types.RepositoryClassOfficial},
-					Digest:     "md5:e35b7bd7c7a54c73d4b7f7e18f4a1e4f",
-					Digests: []digest.SourcedDigest{
-						{
-							Digest: "md5:e35b7bd7c7a54c73d4b7f7e18f4a1e4f",
-							Source: digest.SourceRPMSigMD5,
-						},
-					},
 					InstalledFiles: []string{
 						"/etc/ld.so.conf",
 						"/etc/rpc",

@@ -253,11 +253,11 @@ func (s *SPDX) parsePackage(spdxPkg spdx.Package) (*core.Component, error) {
 	return component, nil
 }
 
-func (s *SPDX) unmarshalChecksums(checksums []spdx.Checksum) []digest.SourcedDigest {
+func (s *SPDX) unmarshalChecksums(checksums []spdx.Checksum) []digest.Digest {
 	if checksums == nil {
 		return nil
 	}
-	var digests []digest.SourcedDigest
+	var digests []digest.Digest
 	for _, h := range checksums {
 		var alg digest.Algorithm
 		switch h.Algorithm {
@@ -273,10 +273,7 @@ func (s *SPDX) unmarshalChecksums(checksums []spdx.Checksum) []digest.SourcedDig
 			log.Warn("Unsupported hash algorithm", log.String("algorithm", string(h.Algorithm)))
 			continue
 		}
-		digests = append(digests, digest.SourcedDigest{
-			Digest: digest.NewDigestFromString(alg, h.Value),
-			Source: digest.SourceSBOM,
-		})
+		digests = append(digests, digest.NewDigestFromString(alg, h.Value))
 	}
 	return digests
 }

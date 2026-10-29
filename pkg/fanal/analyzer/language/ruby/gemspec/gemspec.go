@@ -16,7 +16,7 @@ func init() {
 	analyzer.RegisterAnalyzer(&gemspecLibraryAnalyzer{})
 }
 
-const version = 2
+const version = 1
 
 var fileRegex = regexp.MustCompile(`.*/specifications/.+\.gemspec`)
 

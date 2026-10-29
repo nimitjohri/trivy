@@ -67,7 +67,7 @@ func WithOffline(offline bool) Option {
 }
 
 // WithChecksum enables calculation of the SHA-1 digest for every archive
-// (not only the ones that are looked up by SHA-1) and recording it on the package.
+// (not only the ones that are looked up by SHA-1) and saving it to Package.Digest.
 func WithChecksum(checksum bool) Option {
 	return func(p *Parser) {
 		p.checksum = checksum
@@ -227,7 +227,7 @@ func (p *Parser) resolveArtifact(r xio.ReadSeekerAt, m manifest, fileProps Prope
 func fillArchiveDigest(pkgs []ftypes.Package, r xio.ReadSeekerAt) error {
 	var d digest.Digest
 	for i := range pkgs {
-		if pkgs[i].HasDigestFrom(digest.SourceJavaArchive) {
+		if pkgs[i].Digest != "" {
 			continue
 		}
 		// Compute the archive digest at most once and reuse it afterwards.
@@ -241,8 +241,7 @@ func fillArchiveDigest(pkgs []ftypes.Package, r xio.ReadSeekerAt) error {
 				return xerrors.Errorf("unable to calculate SHA-1: %w", err)
 			}
 		}
-		pkgs[i].AddDigests(digest.NewSourcedDigest(d, digest.SourceJavaArchive))
-		pkgs[i].Digest = d // TODO: Remove this backward-compatibility assignment when Package.Digest is removed.
+		pkgs[i].Digest = d
 	}
 	return nil
 }
@@ -454,8 +453,7 @@ func (p *Parser) searchBySHA1(r io.ReadSeeker, filePath string) (ftypes.Package,
 	// searchBySHA1 has already calculated the archive's SHA-1, so stamp it on the
 	// resolved package to avoid recalculating it in fillArchiveDigest.
 	if p.checksum {
-		pkg.AddDigests(digest.NewSourcedDigest(d, digest.SourceJavaArchive))
-		pkg.Digest = d // TODO: Remove this backward-compatibility assignment when Package.Digest is removed.
+		pkg.Digest = d
 	}
 	return pkg, nil
 }

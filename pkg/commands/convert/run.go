@@ -41,11 +41,10 @@ func Run(ctx context.Context, opts flag.Options) (err error) {
 	}
 
 	compat(&r)
-
-	if !slices.Contains(types.CryptoFindingsFormats, opts.Format) {
+	// Only JSON output shows crypto findings
+	if opts.Format != types.FormatJSON {
 		r.Results.DropCryptoFindings()
 	}
-
 	if err = result.Filter(ctx, r, opts.FilterOpts()); err != nil {
 		return xerrors.Errorf("unable to filter results: %w", err)
 	}

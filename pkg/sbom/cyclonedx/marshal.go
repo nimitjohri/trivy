@@ -279,7 +279,7 @@ func (*Marshaler) Supplier(supplier string) *cdx.OrganizationalEntity {
 }
 
 func (m *Marshaler) Hashes(files []core.File) *[]cdx.Hash {
-	digests := lo.FlatMap(files, func(file core.File, _ int) []digest.SourcedDigest {
+	digests := lo.FlatMap(files, func(file core.File, _ int) []digest.Digest {
 		return file.Digests
 	})
 	if len(digests) == 0 {
@@ -305,7 +305,7 @@ func (m *Marshaler) Hashes(files []core.File) *[]cdx.Hash {
 
 		cdxHashes = append(cdxHashes, cdx.Hash{
 			Algorithm: alg,
-			Value:     d.Value(),
+			Value:     d.Encoded(),
 		})
 	}
 	return &cdxHashes

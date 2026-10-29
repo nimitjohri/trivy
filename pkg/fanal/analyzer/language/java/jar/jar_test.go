@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/aquasecurity/trivy/pkg/digest"
 	"github.com/aquasecurity/trivy/pkg/fanal/analyzer"
 	"github.com/aquasecurity/trivy/pkg/fanal/types"
 	"github.com/aquasecurity/trivy/pkg/javadb"
@@ -102,12 +101,6 @@ func Test_javaLibraryAnalyzer_Analyze(t *testing.T) {
 								FilePath: "testdata/test.par",
 								Version:  "3.0.0",
 								Digest:   "sha1:bdce3e13cc5d39960ab7f7644ae24d82becd2ba2",
-								Digests: []digest.SourcedDigest{
-									{
-										Digest: "sha1:bdce3e13cc5d39960ab7f7644ae24d82becd2ba2",
-										Source: digest.SourceJavaArchive,
-									},
-								},
 							},
 							{
 								Name:     "com.fasterxml.jackson.core:jackson-core",
@@ -115,12 +108,6 @@ func Test_javaLibraryAnalyzer_Analyze(t *testing.T) {
 								Version:  "2.9.10",
 								Licenses: []string{"Apache-2.0"},
 								Digest:   "sha1:66b715dec9dd8b0f39f3296e67e05913bf422d0c",
-								Digests: []digest.SourcedDigest{
-									{
-										Digest: "sha1:66b715dec9dd8b0f39f3296e67e05913bf422d0c",
-										Source: digest.SourceJavaArchive,
-									},
-								},
 							},
 						},
 					},
@@ -144,12 +131,6 @@ func Test_javaLibraryAnalyzer_Analyze(t *testing.T) {
 								FilePath: "testdata/test.jar",
 								Version:  "9.0.65",
 								Digest:   "sha1:bd70dfeb39cc83c6934be24fa377b21e541dbe76",
-								Digests: []digest.SourcedDigest{
-									{
-										Digest: "sha1:bd70dfeb39cc83c6934be24fa377b21e541dbe76",
-										Source: digest.SourceJavaArchive,
-									},
-								},
 								Licenses: []string{"Apache-2.0"},
 							},
 						},

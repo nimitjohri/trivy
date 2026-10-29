@@ -40,16 +40,6 @@ func Test_osReleaseAnalyzer_Analyze(t *testing.T) {
 			},
 		},
 		{
-			name:      "Ubuntu",
-			inputFile: "testdata/ubuntu",
-			want: &analyzer.AnalysisResult{
-				OS: types.OS{
-					Family: types.Ubuntu,
-					Name:   "26.10",
-				},
-			},
-		},
-		{
 			name:      "Red Hat Enterprise Linux",
 			inputFile: "testdata/rhel",
 			want: &analyzer.AnalysisResult{

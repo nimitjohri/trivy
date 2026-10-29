@@ -41,7 +41,7 @@ func newDpkgAnalyzer(_ analyzer.AnalyzerOptions) (analyzer.PostAnalyzer, error) 
 }
 
 const (
-	analyzerVersion = 7
+	analyzerVersion = 6
 
 	statusFile    = "var/lib/dpkg/status"
 	statusDir     = "var/lib/dpkg/status.d/"
@@ -256,8 +256,7 @@ func (a dpkgAnalyzer) parseDpkgStatus(filePath string, r io.Reader, digests map[
 
 		pkg = a.parseDpkgPkg(header)
 		if pkg != nil {
-			pkg.AddDigests(digest.NewSourcedDigest(digests[pkg.ID], digest.SourceDpkgAvailable))
-			pkg.Digest = digests[pkg.ID] // TODO: Remove this backward-compatibility assignment when Package.Digest is removed.
+			pkg.Digest = digests[pkg.ID]
 			pkgs[pkg.ID] = pkg
 			pkgIDs[pkg.Name] = pkg.ID
 		}

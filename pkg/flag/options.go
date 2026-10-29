@@ -449,9 +449,6 @@ type Options struct {
 	usedFlags []Flagger
 }
 
-// cryptoFormats are the formats that show cryptographic assets or their findings.
-var cryptoFormats = slices.Concat([]types.Format{types.FormatCycloneDX}, types.CryptoFindingsFormats)
-
 // Align takes consistency of options
 func (o *Options) Align(f *Flags) error {
 	if scanFlagGroup, ok := findFlagGroup[*ScanFlagGroup](f); ok && scanFlagGroup.Scanners != nil {
@@ -491,8 +488,9 @@ func (o *Options) Align(f *Flags) error {
 		}
 	}
 
-	if o.Scanners.Enabled(types.CryptoScanner) && !slices.Contains(cryptoFormats, o.Format) {
-		return xerrors.Errorf("'--scanners crypto' can only be used with '--format cyclonedx', '--format json' or '--format table'")
+	// Only JSON and CycloneDX output show cryptographic assets
+	if o.Scanners.Enabled(types.CryptoScanner) && o.Format != types.FormatCycloneDX && o.Format != types.FormatJSON {
+		return xerrors.Errorf("'--scanners crypto' can only be used with '--format cyclonedx' or '--format json'")
 	}
 
 	// A remote SBOM replaces layer analysis, so cryptographic assets would not be collected
@@ -534,7 +532,8 @@ func (o *Options) ScanOpts() types.ScanOptions {
 		ScanRemovedPackages: o.ScanRemovedPkgs,     // this is valid only for 'image' subcommand
 		LicenseCategories:   o.LicenseCategories,
 		LicenseFull:         o.LicenseFull,
-		CryptoChecks:        slices.Contains(types.CryptoFindingsFormats, o.Format),
+		// Only JSON output shows crypto findings
+		CryptoChecks:        o.Format == types.FormatJSON,
 		FilePatterns:        o.FilePatterns,
 		IncludeDevDeps:      o.IncludeDevDeps,
 		Distro:              o.Distro,

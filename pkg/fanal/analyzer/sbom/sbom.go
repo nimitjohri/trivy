@@ -19,7 +19,7 @@ func init() {
 	analyzer.RegisterAnalyzer(&sbomAnalyzer{})
 }
 
-const version = 2
+const version = 1
 
 var requiredSuffixes = []string{
 	".spdx",

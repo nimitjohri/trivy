@@ -25,7 +25,7 @@ func init() {
 	analyzer.RegisterAnalyzer(newRPMPkgAnalyzer())
 }
 
-const version = 4
+const version = 3
 
 var (
 	requiredFiles = []string{
@@ -184,10 +184,9 @@ func (a rpmPkgAnalyzer) listPkgs(ctx context.Context, db RPMDB) (types.Packages,
 			DependsOn:       pkg.Requires, // Will be replaced with package IDs
 			Maintainer:      pkg.Vendor,
 			Repository:      repo,
-			Digest:          d, // TODO: Remove this backward-compatibility assignment when Package.Digest is removed.
+			Digest:          d,
 			InstalledFiles:  files,
 		}
-		p.AddDigests(digest.NewSourcedDigest(d, digest.SourceRPMSigMD5))
 		pkgs = append(pkgs, p)
 		installedFiles = append(installedFiles, files...)
 

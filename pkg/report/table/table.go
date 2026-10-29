@@ -40,7 +40,6 @@ type Writer struct {
 	secretRenderer        Renderer
 	pkgLicenseRenderer    Renderer
 	fileLicenseRenderer   Renderer
-	cryptoRenderer        Renderer
 
 	options Options
 }
@@ -81,7 +80,6 @@ func NewWriter(options Options) *Writer {
 		secretRenderer:        NewSecretRenderer(buf, isTerminal, options.Severities),
 		pkgLicenseRenderer:    NewPkgLicenseRenderer(buf, isTerminal, options.Severities),
 		fileLicenseRenderer:   NewFileLicenseRenderer(buf, isTerminal, options.Severities),
-		cryptoRenderer:        NewCryptoRenderer(buf, isTerminal, options.Severities),
 		options:               options,
 	}
 }
@@ -136,9 +134,6 @@ func (tw *Writer) render(result types.Result) {
 	// file license
 	case types.ClassLicenseFile:
 		tw.fileLicenseRenderer.Render(result)
-	// cryptographic asset
-	case types.ClassCrypto:
-		tw.cryptoRenderer.Render(result)
 	default:
 		return
 	}
